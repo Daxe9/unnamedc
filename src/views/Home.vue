@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import Request from "@/components/Request.vue";
 import Response from "@/components/Response.vue";
+import { ref } from "vue";
+import { APIResponse } from "@/types/response";
+
+const response = ref<APIResponse>();
+
+function receiveResponse(res: APIResponse) {
+    response.value = res
+}
+
 </script>
 <template>
 	<div class="main-container">
-		<Request />
-		<Response />
+		<Request @emitResponse="receiveResponse"/>
+		<Response :response="response" />
 	</div>
 </template>
 
@@ -19,6 +28,6 @@ import Response from "@/components/Response.vue";
 }
 
 .main-container > * {
-	flex-grow: 1;
+    flex-basis: 50%;
 }
 </style>
