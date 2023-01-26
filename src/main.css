@@ -1,40 +1,38 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 :root {
-  --url-bar-background-color: #ffffff;
-  --url-bar-text-color: #000000;
-  /* better color choice than green */
-  --url-bar-button-color: #1ED760;
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+	--url-bar-background-color: #ffffff;
+	--url-bar-text-color: #000000;
+	/* better color choice than green */
+	--url-bar-button-color: #1ed760;
+    --request-background-color: #3E364C;
+    --response-background-color: #1C1D2F; 
+    --response-background-body-color: #011e26; 
+    --response-text-color: #f5f5f5; 
+
+	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: 400;
+	color: #0f0f0f;
+	background-color: #f6f6f6;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
+	margin: 0;
+	padding: 0;
+	height: 100vh;
 }
 
 #app {
-  height: 100%;
-}
-
-.body h1 {
-  color: black;
+	height: 100%;
 }
 
 /*# sourceMappingURL=main.css.map */

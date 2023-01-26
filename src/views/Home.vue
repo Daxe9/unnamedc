@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import Request from "@/components/Request.vue";
-import Response from "@/components/Response.vue";
-import { ref } from "vue";
+import Request from "@/components/Request/Request.vue";
+import Response from "@/components/Response/Response.vue";
+import { ref, onMounted } from "vue";
 import { APIResponse } from "@/types/response";
+/* import test from "@/test.test.test.test" */
 
 const response = ref<APIResponse>();
 
 function receiveResponse(res: APIResponse) {
     response.value = res
 }
+
+onMounted(async () => {
+    /* await test() */
+})
+
 
 </script>
 <template>
@@ -21,7 +27,7 @@ function receiveResponse(res: APIResponse) {
 <style scoped>
 .main-container {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	width: 100%;
 	height: 100%;
 	color: #ffffff;
@@ -30,4 +36,11 @@ function receiveResponse(res: APIResponse) {
 .main-container > * {
     flex-basis: 50%;
 }
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+}
+
 </style>

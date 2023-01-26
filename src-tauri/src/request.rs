@@ -1,4 +1,5 @@
-use reqwest::{header::HeaderMap, StatusCode};
+// TODO: share client for all requests
+use reqwest::{header::{HeaderValue, HeaderMap}, StatusCode};
 use std::{time::{Instant, Duration}, collections::HashMap};
 use serde::Serialize;
 use serde_json::Value;
@@ -49,46 +50,69 @@ impl serde::Serialize for APIError {
 }
 
 #[tauri::command]
-pub async fn get_request(url: &str) -> Result<ResponseData, APIError> {
-    // TODO: share client for all requests
+pub async fn get_request(url: &str, headers: Option<HashMap<&str, &str>>) -> Result<ResponseData, APIError> {
+    let header_map = get_headers(headers);
 
     let client = reqwest::Client::new();
 
     // measure api call time
     let start_timer = Instant::now();
     // make get request
-    let raw_result = client.get(url).send().await?;
+    let raw_result = client.get(url).headers(header_map).send().await?;
     // end  the timer
     let duration = start_timer.elapsed();
-    
+
     // get complementary data
     let headers = raw_result.headers().clone();
     let status = raw_result.status();
-    
+
     // create the response data to send back to the frontend
     let response_data = ResponseData::new(
         headers,
         status,
         duration,
         raw_result.text().await?,
-        );
+    );
 
     Ok(response_data)
 }
 
+fn get_headers(headers: Option<HashMap<&str, &str>>) -> HeaderMap {
+
+    match &headers {
+        None => HeaderMap::new(),
+        Some(h) => {
+            let mut header_map = HeaderMap::new();
+            for (key, value) in h.iter() {
+                let value: HeaderValue = match value.parse() {
+                    Err(_) => continue,
+                    Ok(v) => v
+                };
+                
+                // convert key from &str to &'static str
+                let key: &'static str = unsafe { std::mem::transmute(key.as_bytes()) };
+                
+                header_map.insert(key, value);
+            }
+            header_map
+        }
+    }
+}
+
 #[tauri::command]
-pub async fn post_request(url: &str, raw_body: &str) -> Result<ResponseData, APIError> {
+pub async fn post_request(url: &str, body: &str, headers: Option<HashMap<&str, &str>>) -> Result<ResponseData, APIError> {
     // TODO: add headers
     // parse the body
-    let body: Value = serde_json::from_str(raw_body)?;
+    let body: Value = serde_json::from_str(body)?;
 
-    // inizialize the client
+    let header_map = get_headers(headers);
+        // inizialize the client
     let client = reqwest::Client::new();
     
     // measure api call time
     let start_timer = Instant::now();
     // make the post request with given body
-    let raw_result = match client.post(url).json(&body).send().await {
+    let raw_result = match client.post(url).headers(header_map).json(&body).send().await {
         Ok(v) => v,
         Err(err) => return Err(APIError::RequestError(err))
     };
