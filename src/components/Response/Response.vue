@@ -82,25 +82,17 @@ const props = defineProps<{
 	border-bottom-right-radius: 10px;
 }
 
+			/* <div class="specific-status status"><span>STATUS</span></div> */
 .specific-status span {
     font-weight: bold;
     text-align: center;
     display: inline-block;
     min-width: 6em;
     border-right: 1px solid white;        
-
 }
 
-.status {
-	background-color: #e76f51;
-    color: white;
-}
-.length {
-	background-color: #f4a261;
-    color: white;
-}
-.velocity {
-	background-color: #2a9d8f;
-    color: white;
-}
+.meta-data {
+        background-color: black;;
+    }
+
 </style>
