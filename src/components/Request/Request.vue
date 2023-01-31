@@ -16,8 +16,12 @@ function getUrlInput() {
 async function makeRequest() {
 	const url = getUrlInput();
 	try {
-        result.value = await getRequest(url);
-	} catch (_) {}
+		result.value = await getRequest(url);
+	} catch (e: any) {
+		if (import.meta.env.MODE === "development") {
+			console.error(e);
+		}
+	}
 
 	emits("emitResponse", unref(result.value));
 }
@@ -25,7 +29,7 @@ async function makeRequest() {
 <template>
 	<div class="request-container">
 		<UrlBar ref="urlBarRef" @urlInput="makeRequest" />
-        <Panel />
+		<Panel />
 		<div class="content">
 			<div class="meta"></div>
 

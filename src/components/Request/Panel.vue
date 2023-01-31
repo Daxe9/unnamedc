@@ -23,7 +23,7 @@ function getValueOfSetting(e: any) {
 	// previousSibiling
 	const setting = {
 		value: e.target.textContent,
-		name: e.target.parentElement.previousElementSibling.innerText,
+		name: e.target.parentElement.previousElementSibling.textContent,
 	};
 
 	previewSettings[setting.name] = setting.value;
@@ -48,9 +48,9 @@ function toggleList(name: string) {
 					:key="k"
 				>
 					<div class="preview-single-setting">
-                        <span class="bullet-indicator">>></span>
-                        <span>{{ property[0] }}</span>
-                        <span class="cool-color-text">{{ property[1] }}</span>
+						<span class="bullet-indicator">>></span>
+						<span>{{ property[0] }}</span>
+						<span class="cool-color-text">{{ property[1] }}</span>
 					</div>
 				</div>
 			</div>
@@ -71,7 +71,7 @@ function toggleList(name: string) {
 						:key="i + j"
 						@click="getValueOfSetting"
 					>
-						> {{ type }}
+						{{ type }}
 					</li>
 				</ul>
 			</div>
@@ -124,13 +124,12 @@ function toggleList(name: string) {
 }
 
 .preview-single-setting {
-        display: flex;
-        flex-direction: row;
-    }
-
-.bullet-indicator {
-    font-weight: bold;
-    font-size: 1.2em;
+	display: flex;
+	flex-direction: row;
 }
 
+.bullet-indicator {
+	font-weight: bold;
+	font-size: 1.2em;
+}
 </style>

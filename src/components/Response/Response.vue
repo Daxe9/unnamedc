@@ -8,27 +8,16 @@ interface StatusCode {
 	description?: string;
 }
 
-const dummy = {
-	employees: [
-		{
-			firstName: "John",
-			lastName: "Doe",
-		},
-		{
-			firstName: "Anna",
-			lastName: "Smith",
-		},
-		{
-			firstName: "Peter",
-			lastName: "Jones",
-		},
-	],
-};
-
 const props = defineProps<{
 	response: APIResponse | undefined;
 }>();
 
+function f() {
+	// @ts-ignore
+	const { response } = props;
+	console.log(typeof response?.headers);
+	console.log(response?.headers["content-length"]);
+}
 </script>
 <template>
 	<div class="response-container">
@@ -40,10 +29,18 @@ const props = defineProps<{
 				}}</span>
 			</div>
 			<div class="specific-status length">
-				<span>LENGTH</span><span></span>
+				<span @click="f">LENGTH</span
+				>{{
+					props.response?.headers["content-length"]
+						? props.response?.headers["content-length"] + " Bytes"
+						: ""
+				}}<span></span>
 			</div>
 			<div class="specific-status velocity">
-				<span>VELOCITY</span><span class="cool-color-text">{{props.response?.duration ?? ""}}</span>
+				<span>VELOCITY</span
+				><span class="cool-color-text">{{
+					props.response?.duration ?? ""
+				}}</span>
 			</div>
 		</div>
 		<div class="response-body response-child">
@@ -53,7 +50,11 @@ const props = defineProps<{
 			}}</component>
 			<div class="status-bar">
 				<span>Response</span>
-				<span class="response-date">Last call @{{ new Date().toISOString()}}</span>
+				<span class="response-date">{{
+					props.response
+						? "Last call @" + new Date().toISOString()
+						: "No calls made"
+				}}</span>
 			</div>
 		</div>
 	</div>
@@ -73,7 +74,7 @@ const props = defineProps<{
 }
 
 .response-date {
-    text-align: right;
+	text-align: right;
 }
 
 .body-data {
@@ -93,8 +94,8 @@ const props = defineProps<{
 	background-color: var(--response-background-body-color);
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 /* <div class="specific-status status"><span>STATUS</span></div> */

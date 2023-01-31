@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
 	<RouterView class="router" />
@@ -8,6 +6,6 @@
 
 <style scoped>
 .router {
-        height: 100vh;
-    }
+	height: 100vh;
+}
 </style>

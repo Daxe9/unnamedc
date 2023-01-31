@@ -3,18 +3,18 @@
 	--url-bar-text-color: #000000;
 	/* better color choice than green */
 	--url-bar-button-color: #1ed760;
-    --request-background-color: #09050D;
-    --response-background-color: #09050D;
-    --response-text-color: #EEEEEE;
-    --response-background-body-color: #011e26; 
-    --response-text-color: #f5f5f5; 
-    --highlight-text: #00DAC3;
-    --light-color: #EEE;
-    --dark-color: #191C1B;
+	--request-background-color: #09050d;
+	--response-background-color: #09050d;
+	--response-text-color: #eeeeee;
+	--response-background-body-color: #011e26;
+	--response-text-color: #f5f5f5;
+	--highlight-text: #00dac3;
+	--light-color: #eee;
+	--dark-color: #191c1b;
 
-    /* #00DAC3 */
-    /* #EEEEEE */
-    /* #191C1B */
+	/* #00DAC3 */
+	/* #EEEEEE */
+	/* #191C1B */
 
 	font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
 	font-size: 16px;
@@ -36,17 +36,17 @@ body {
 	margin: 0;
 	padding: 0;
 	height: 100vh;
-    background-color: var(--request-background-color);
+	background-color: var(--request-background-color);
 }
 
 .cool-color-text {
-    color: var(--highlight-text);
+	color: var(--highlight-text);
 }
 
 .prevent-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10 and IE 11 */
+	user-select: none; /* Standard syntax */
 }
 
 #app {

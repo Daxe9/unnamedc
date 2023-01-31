@@ -8,18 +8,16 @@ import { APIResponse } from "@/types/response";
 const response = ref<APIResponse>();
 
 function receiveResponse(res: APIResponse) {
-    response.value = res
+	response.value = res;
 }
 
 onMounted(async () => {
-    /* await test() */
-})
-
-
+	/* await test() */
+});
 </script>
 <template>
 	<div class="main-container">
-		<Request @emitResponse="receiveResponse"/>
+		<Request @emitResponse="receiveResponse" />
 		<Response :response="response" />
 	</div>
 </template>
@@ -34,19 +32,18 @@ onMounted(async () => {
 }
 
 .main-container > * {
-    max-width: 50%;
-    flex-basis: 50%;
+	max-width: 50%;
+	flex-basis: 50%;
 }
 
 @media (max-width: 768px) {
-    .main-container {
-        flex-direction: column;
-    }
+	.main-container {
+		flex-direction: column;
+	}
 
-    .main-container > * {
-        max-width: 100%;
-        max-height: 50%;
-    }
+	.main-container > * {
+		max-width: 100%;
+		max-height: 50%;
+	}
 }
-
 </style>
