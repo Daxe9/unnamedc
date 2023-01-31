@@ -22,7 +22,6 @@ function sendUrl() {
 </template>
 
 <style>
-@import url("@/main.css");
 
 input[type="text"] {
 	background-color: var(--url-bar-background-color);

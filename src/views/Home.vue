@@ -34,12 +34,18 @@ onMounted(async () => {
 }
 
 .main-container > * {
+    max-width: 50%;
     flex-basis: 50%;
 }
 
 @media (max-width: 768px) {
     .main-container {
         flex-direction: column;
+    }
+
+    .main-container > * {
+        max-width: 100%;
+        max-height: 50%;
     }
 }
 

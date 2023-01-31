@@ -28,28 +28,37 @@ const dummy = {
 const props = defineProps<{
 	response: APIResponse | undefined;
 }>();
+
 </script>
 <template>
 	<div class="response-container">
 		<div class="meta-data response-child">
-			<div class="specific-status status"><span>STATUS</span></div>
-			<div class="specific-status length"><span>LENGTH</span></div>
-			<div class="specific-status velocity"><span>VELOCITY</span></div>
+			<div class="specific-status status">
+				<span>STATUS</span
+				><span class="cool-color-text">{{
+					props.response?.status_code ?? ""
+				}}</span>
+			</div>
+			<div class="specific-status length">
+				<span>LENGTH</span><span></span>
+			</div>
+			<div class="specific-status velocity">
+				<span>VELOCITY</span><span class="cool-color-text">{{props.response?.duration ?? ""}}</span>
+			</div>
 		</div>
 		<div class="response-body response-child">
 			<!-- TODO: highlight the response whether is possible -->
 			<component class="body-data" :is="'pre'">{{
-				props.response ?? ""
+				props.response?.body ?? ""
 			}}</component>
 			<div class="status-bar">
 				<span>Response</span>
-				<span><!--  --></span>
+				<span class="response-date">Last call @{{ new Date().toISOString()}}</span>
 			</div>
 		</div>
 	</div>
 </template>
 <style>
-@import "@/main.css";
 .response-container {
 	background-color: var(--response-background-color);
 }
@@ -61,6 +70,10 @@ const props = defineProps<{
 
 .response-body {
 	color: var(--response-text-color);
+}
+
+.response-date {
+    text-align: right;
 }
 
 .body-data {
@@ -75,24 +88,26 @@ const props = defineProps<{
 
 .status-bar {
 	background-color: transparent;
-	padding: 0.2em 0 0.25rem 0.5em;
+	padding: 0.2em 0.5em 0.25rem 0.5em;
 	font-weight: bold;
 	background-color: var(--response-background-body-color);
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
-			/* <div class="specific-status status"><span>STATUS</span></div> */
-.specific-status span {
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
-    min-width: 6em;
-    border-right: 1px solid white;        
+/* <div class="specific-status status"><span>STATUS</span></div> */
+.specific-status span:first-child {
+	font-weight: bold;
+	text-align: center;
+	display: inline-block;
+	min-width: 6em;
+	border-right: 1px solid white;
+	margin-right: 0.5em;
 }
 
 .meta-data {
-        background-color: black;;
-    }
-
+	background-color: black;
+}
 </style>

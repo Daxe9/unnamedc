@@ -2,8 +2,8 @@
 import { ref, unref } from "vue";
 import UrlBar from "./UrlBar.vue";
 import Panel from "./Panel.vue";
-import { invoke } from "@tauri-apps/api";
 import { APIResponse } from "@/types/response";
+import { getRequest } from "@/services/requestService";
 
 const emits = defineEmits(["emitResponse"]);
 const urlBarRef = ref();
@@ -15,10 +15,8 @@ function getUrlInput() {
 
 async function makeRequest() {
 	const url = getUrlInput();
-	result.value = await invoke("get_request", { url });
 	try {
-		// @ts-ignore
-		result.value.body = JSON.parse(result.value.body);
+        result.value = await getRequest(url);
 	} catch (_) {}
 
 	emits("emitResponse", unref(result.value));
@@ -37,7 +35,6 @@ async function makeRequest() {
 </template>
 
 <style>
-@import "@/main.css";
 .request-container {
 	background-color: var(--request-background-color);
 }

@@ -12,8 +12,10 @@ async function getRequest(url: string, headers?: any): Promise<APIResponse> {
         }
 
         const response: APIResponse = await invoke("get_request", requestBody);
+
         response.body = JSON.parse(response.body);
-    
+        response.duration += "µs";
+
         return response
     } catch (error: any) {
         return Promise.reject(Error(`[ERROR]: ${error}`)) 
@@ -35,8 +37,10 @@ async function postRequest(url: string, body?: any, headers?: any): Promise<APIR
             requestBody.headers = headers
         }
         const response: APIResponse = await invoke("post_request", requestBody);
+
         response.body = JSON.parse(response.body);
-    
+        response.duration += "µs";
+
         return response
     } catch (error: any) {
         return Promise.reject(Error(`[ERROR]: ${error}`)) 

@@ -71,7 +71,7 @@ function toggleList(name: string) {
 						:key="i + j"
 						@click="getValueOfSetting"
 					>
-						{{ type }}
+						> {{ type }}
 					</li>
 				</ul>
 			</div>
@@ -80,7 +80,6 @@ function toggleList(name: string) {
 </template>
 
 <style>
-@import "@/main.css";
 .preview-title {
 	text-align: center;
 }
@@ -112,7 +111,7 @@ function toggleList(name: string) {
 }
 
 .settings-select {
-	background-color: red;
+	background-color: var(--dark-color);
 }
 
 .setting-title {
