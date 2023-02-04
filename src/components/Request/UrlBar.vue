@@ -3,16 +3,19 @@ import { ref } from "vue";
 
 const urlInput = ref<string>("");
 
+// check opearting mode
 if (import.meta.env.MODE === "development") {
 	urlInput.value = "http://localhost:3000/";
 }
 
 const emits = defineEmits(["urlInput"]);
 
+// make urlInput accessible from parent element
 defineExpose({
 	urlInput,
 });
 
+// emit urlInput to parent element
 function sendUrl(e: any) {
 	e.preventDefault();
 	emits("urlInput");
@@ -20,25 +23,24 @@ function sendUrl(e: any) {
 </script>
 
 <template>
-	<form class="bar" @submit="sendUrl">
+	<form class="url-bar" @submit="sendUrl">
 		<input type="text" v-model="urlInput" placeholder="URL" />
-		<button class="bar-confirm" @click="sendUrl">Send</button>
+		<button class="bar-confirm px-4" @click="sendUrl">Send</button>
 	</form>
 </template>
 
 <style>
 input[type="text"] {
-	background-color: var(--url-bar-background-color);
-	color: var(--url-bar-text-color);
+	background-color: transparent;
+	color: var(--light-color);
+	border: 1px solid var(--light-color);
 	width: 100%;
 	outline: none;
-	border: none;
-	margin: 0 auto;
 	padding: 0 0.2em;
 }
 
-.bar {
-	width: 95%;
+.url-bar {
+	width: 98%;
 	height: 6.5%;
 	max-height: 35px;
 
@@ -49,9 +51,14 @@ input[type="text"] {
 }
 
 .bar-confirm {
-	outline: none;
-	border: none;
-	background-color: var(--url-bar-button-color);
-	padding: 0 1em;
+	max-width: 20%;
+	border: 1px solid var(--light-color);
+    transition: all 0.4s ease-in-out;
+}
+
+.bar-confirm:hover {
+	box-shadow: 1px 0 2px 1px;
+	background-color: var(--light-color);
+	color: var(--dark-color);
 }
 </style>

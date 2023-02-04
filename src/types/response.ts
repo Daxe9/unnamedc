@@ -5,7 +5,10 @@ export interface APIResponse {
 	duration: number | string;
 }
 
-export interface ApiFailedResponse {
-	error_message: string;
-	status_code: number;
-}
+// export interface ApiFailedResponse {
+// 	error_message: string;
+// 	status_code: number;
+// }
+
+
+

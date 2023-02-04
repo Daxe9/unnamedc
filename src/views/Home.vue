@@ -1,23 +1,32 @@
 <script setup lang="ts">
 import Request from "@/components/Request/Request.vue";
 import Response from "@/components/Response/Response.vue";
-import { ref, onMounted } from "vue";
-import { APIResponse } from "@/types/response";
-/* import test from "@/test.test.test.test" */
+import { ref } from "vue";
+import type { APIResponse } from "@/types/response";
+import type { APIRequest } from "@/types/request";
+import { processRequest } from "@/services/requestService";
 
+const errorMessage = ref<string>("");
 const response = ref<APIResponse>();
 
-function receiveResponse(res: APIResponse) {
-	response.value = res;
+// receive requset from Request component and send it to the requestService
+async function handleRequest(request: APIRequest) {
+    try {
+        // set response if successful
+        response.value = await processRequest(request);
+        // remove error message
+        errorMessage.value = "";
+    } catch (error: any) {
+        if (import.meta.env.MODE === "development") {
+            console.error(error);
+        }
+        errorMessage.value = error.message;
+    } 
 }
-
-onMounted(async () => {
-	/* await test() */
-});
 </script>
 <template>
 	<div class="main-container">
-		<Request @emitResponse="receiveResponse" />
+		<Request :renderError="errorMessage" @sendRequest="handleRequest" />
 		<Response :response="response" />
 	</div>
 </template>

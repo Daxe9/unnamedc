@@ -1,35 +1,47 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 
+// display preview of selected settings
 const previewSettings: Record<string, string> = reactive({});
 
+// available settings
 const modes: any = reactive([
 	{
-		name: "HTTP REQUEST",
+		name: "METHOD",
 		value: ["GET", "POST" /*, "PUT", "DELETE", "PATCH"*/],
 	},
 	{
-		name: "REQUEST BODY",
+		name: "BODY",
 		value: ["JSON", "FORM", "RAW_TEXT"],
 	},
 ]);
 
+
+defineExpose({
+    state: previewSettings,
+    modes: modes
+})
+
+// make settings invisible on mount
 modes.forEach((mode: any) => {
 	mode.visible = false;
 });
 
+// TODO: remove a setting
+// add settings to preview
 function getValueOfSetting(e: any) {
-	// parentElement
-	// previousSibiling
+    // get value of the element and the name of the setting from h3 element
 	const setting = {
 		value: e.target.textContent,
 		name: e.target.parentElement.previousElementSibling.textContent,
 	};
 
-	previewSettings[setting.name] = setting.value;
+	previewSettings[setting.name.toLowerCase()] = setting.value;
 }
 
+// toggle visibility of settings
 function toggleList(name: string) {
+    // toggle the visibility of the list
 	const mode = modes.find((mode: any) => mode.name === name);
 	mode.visible = !mode.visible;
 }
@@ -37,9 +49,9 @@ function toggleList(name: string) {
 
 <template>
 	<div class="request-panel">
-		<div class="preview">
+		<div class="rounded-tl-lg rounded-tr-lg pt-1 mt-2 mb-3 preview">
 			<div>
-				<h2 class="preview-title">Chose settings</h2>
+				<h2 class="text-center p-0 m-0 text-lg">Selected settings</h2>
 			</div>
 			<hr />
 			<div class="settings-preview">
@@ -47,16 +59,16 @@ function toggleList(name: string) {
 					v-for="(property, k) in Object.entries(previewSettings)"
 					:key="k"
 				>
-					<div class="preview-single-setting">
+					<div class="flex flex-row">
 						<span class="bullet-indicator">>></span>
-						<span>{{ property[0] }}</span>
+						<span>{{ property[0].toUpperCase() }}</span>
 						<span class="cool-color-text">{{ property[1] }}</span>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="settings-select">
+		<div class="rounded-bl-lg rounded-br-lg py-2 settings-select">
 			<div v-for="(mode, i) in modes" :key="i" class="prevent-select">
 				<h3
 					class="cool-color-text setting-title"
@@ -80,18 +92,8 @@ function toggleList(name: string) {
 </template>
 
 <style>
-.preview-title {
-	text-align: center;
-}
-
-.preview {
-	border-top-left-radius: 0.3em;
-	border-top-right-radius: 0.3em;
-}
-
 .settings-select {
-	border-bottom-left-radius: 0.3em;
-	border-bottom-right-radius: 0.3em;
+	background-color: var(--dark-color);
 }
 
 .request-panel * {
@@ -100,17 +102,6 @@ function toggleList(name: string) {
 }
 
 .preview {
-	margin: 1em 0.4em;
-	padding: 0.4em 0;
-	background-color: var(--dark-color);
-}
-
-.preview h2 {
-	margin: 0;
-	padding: 0;
-}
-
-.settings-select {
 	background-color: var(--dark-color);
 }
 
@@ -123,13 +114,7 @@ function toggleList(name: string) {
 	cursor: pointer;
 }
 
-.preview-single-setting {
-	display: flex;
-	flex-direction: row;
-}
-
 .bullet-indicator {
 	font-weight: bold;
-	font-size: 1.2em;
 }
 </style>

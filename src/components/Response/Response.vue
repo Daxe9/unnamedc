@@ -1,27 +1,25 @@
 <script setup lang="ts">
 import { APIResponse } from "@/types/response";
-import { getReasonPhrase } from "http-status-codes";
+import { onMounted } from "vue";
+/* import { getReasonPhrase } from "http-status-codes"; */
+import hljsVuePlugin from "@highlightjs/vue-plugin";
 
-interface StatusCode {
-	code: number;
-	reason: string;
-	description?: string;
-}
-
+onMounted(() => {
+    // the style is done only when the component is mounted, it can't be styled otherwise
+	// @ts-ignore
+	document.querySelector(".hljs").style.backgroundColor = "#191c1b";
+});
+const testtext = "console.log('Hello World!');";
+const Highlight = hljsVuePlugin.component;
 const props = defineProps<{
 	response: APIResponse | undefined;
 }>();
-
-function f() {
-	// @ts-ignore
-	const { response } = props;
-	console.log(typeof response?.headers);
-	console.log(response?.headers["content-length"]);
-}
 </script>
 <template>
 	<div class="response-container">
-		<div class="meta-data response-child">
+		<div
+			class="border-wrapper meta-data response-child rounded-tl-lg rounded-tr-lg"
+		>
 			<div class="specific-status status">
 				<span>STATUS</span
 				><span class="cool-color-text">{{
@@ -29,7 +27,7 @@ function f() {
 				}}</span>
 			</div>
 			<div class="specific-status length">
-				<span @click="f">LENGTH</span
+				<span>LENGTH</span
 				>{{
 					props.response?.headers["content-length"]
 						? props.response?.headers["content-length"] + " Bytes"
@@ -45,10 +43,13 @@ function f() {
 		</div>
 		<div class="response-body response-child">
 			<!-- TODO: highlight the response whether is possible -->
-			<component class="body-data" :is="'pre'">{{
-				props.response?.body ?? ""
-			}}</component>
-			<div class="status-bar">
+			<Highlight
+                :code="props.response?.body ? JSON.stringify(props.response.body, null, '\t') : testtext " 
+				class="border-wrapper body-data my-2"
+                autodetect
+                />
+
+			<div class="border-wrapper status-bar">
 				<span>Response</span>
 				<span class="response-date">{{
 					props.response
@@ -61,10 +62,10 @@ function f() {
 </template>
 <style>
 .response-container {
-	background-color: var(--response-background-color);
+	background-color: var(--background-color);
 }
 
-.response-child {
+.response-container > div {
 	margin: 0 auto;
 	width: 96%;
 }
@@ -78,27 +79,23 @@ function f() {
 }
 
 .body-data {
-	background-color: var(--response-background-body-color);
-	min-height: 10rem;
+	background-color: var(--dark-color);
+	min-height: 5rem;
 	overflow: scroll;
 	padding: 0.5em 0.8em;
-	margin-bottom: 0.5em;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
 }
 
 .status-bar {
 	background-color: transparent;
 	padding: 0.2em 0.5em 0.25rem 0.5em;
 	font-weight: bold;
-	background-color: var(--response-background-body-color);
+	background-color: var(--dark-color);
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	display: flex;
 	justify-content: space-between;
 }
 
-/* <div class="specific-status status"><span>STATUS</span></div> */
 .specific-status span:first-child {
 	font-weight: bold;
 	text-align: center;
@@ -109,6 +106,6 @@ function f() {
 }
 
 .meta-data {
-	background-color: black;
+	background-color: var(--dark-color);
 }
 </style>

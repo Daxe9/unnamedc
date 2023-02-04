@@ -1,37 +1,44 @@
 <script setup lang="ts">
-import { ref, unref } from "vue";
+import { ref } from "vue";
 import UrlBar from "./UrlBar.vue";
 import Panel from "./Panel.vue";
-import { APIResponse } from "@/types/response";
-import { getRequest } from "@/services/requestService";
+import ErrorPanel from "@/components/Error/ErrorPanel.vue";
+import type { APIRequest } from "@/types/request";
 
-const emits = defineEmits(["emitResponse"]);
+const emits = defineEmits(["sendRequest"]);
+const props = defineProps<{
+    renderError: string;
+}>();
+
 const urlBarRef = ref();
-const result = ref<APIResponse>();
+const settingsRef = ref();
 
 function getUrlInput() {
 	return urlBarRef.value.urlInput;
 }
 
-async function makeRequest() {
-	const url = getUrlInput();
-	try {
-		result.value = await getRequest(url);
-	} catch (e: any) {
-		if (import.meta.env.MODE === "development") {
-			console.error(e);
-		}
-	}
+function buildRequest() {
+    // TODO: headers, body
+    const url = getUrlInput();
+    // unwrap Proxy
+    let settings = Object.assign({}, settingsRef.value.state);
 
-	emits("emitResponse", unref(result.value));
+    const request: APIRequest = {
+        url,
+        settings
+    }; 
+
+	emits("sendRequest", request);
 }
 </script>
 <template>
 	<div class="request-container">
-		<UrlBar ref="urlBarRef" @urlInput="makeRequest" />
-		<Panel />
+		<UrlBar ref="urlBarRef" @urlInput="buildRequest" />
+        <ErrorPanel class="error-panel" v-if="!!props.renderError" :message="props.renderError" />
+		<Panel ref="settingsRef" />
 		<div class="content">
 			<div class="meta"></div>
+
 
 			<div class="body"></div>
 		</div>
@@ -40,6 +47,12 @@ async function makeRequest() {
 
 <style>
 .request-container {
-	background-color: var(--request-background-color);
+	background-color: var(--background-color);
+}
+
+.error-panel {
+    margin-top: 0.5rem;
+    margin-left: 0.4em;
+    margin-right: 0.4em;
 }
 </style>

@@ -1,5 +1,39 @@
 import { invoke } from "@tauri-apps/api";
 import { APIResponse } from "@/types/response";
+import { APIRequest, supportedMethods } from "@/types/request";
+
+async function processRequest(request: APIRequest): Promise<APIResponse> {
+    try {
+        if (!request.url) {
+            throw new Error("URL is required");
+        }
+
+        if (!request.settings) {
+            throw new Error("Request settings are required");
+        }
+
+        if (!request.settings.method) {
+            throw new Error("Request method is required");
+        }
+        
+        if (!supportedMethods.includes(request.settings.method)) {
+            throw new Error("Request method not supported");
+        }
+
+        switch (request.settings.method) {
+            case "GET":
+                return await getRequest(request.url, request.headers);
+            case "POST":
+                return await postRequest(request.url, request.body, request.headers);
+            default: 
+                throw new Error("Request method not supported");
+        }
+
+
+    } catch (error: any) {
+        return Promise.reject(error);
+    }
+}
 
 async function getRequest(url: string, headers?: any): Promise<APIResponse> {
 	try {
@@ -51,4 +85,4 @@ async function postRequest(
 	}
 }
 
-export { type APIResponse, getRequest, postRequest };
+export { processRequest, getRequest, postRequest };
